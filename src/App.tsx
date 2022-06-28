@@ -88,9 +88,13 @@ function App() {
 
   return (
     <div>
+      <div className="message" id="fpsMessage">
+        loading...
+      </div>
+
       <video ref={videoRef} className="w-[100px] h-[100px]" />
       <div className="m-10 p-2 bg-amber-500 border-2">
-        <canvas className="w-[100px] h-[100px]" ref={canvasRef}></canvas>
+        <canvas className="w-[1000px] h-[1000px]" ref={canvasRef}></canvas>
       </div>
     </div>
   );
