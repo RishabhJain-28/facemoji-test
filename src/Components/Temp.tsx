@@ -1,6 +1,6 @@
 import { Avatar } from "@0xalter/alter-core";
 import React, { useEffect, useRef } from "react";
-import AvatarMap from "../module/Facemoji/AvatarStore";
+// import AvatarMap from "../module/Facemoji/AvatarStore";
 import CreateAvatar from "../module/Facemoji/createAvatar";
 import DeserializationAvatarController from "../module/Facemoji/DeserializationAvatarController";
 interface TempProps {
@@ -13,35 +13,17 @@ export const Temp: React.FC<TempProps> = ({ index }) => {
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    const [avatarFuture, avatarView, avatarFactory] = CreateAvatar.createAvatar(
+    const [avatarFuture, avatarView] = CreateAvatar.createAvatar(
       canvasRef.current,
       index
     );
 
-    const avatarPromise = new Promise<{ avatar: Avatar; index: number }>(
-      (resolve) => {
-        avatarFuture
-          .promise()
-          .then((avatar: Avatar) => resolve({ avatar, index: 0 }));
-      }
-    );
-
-    AvatarMap.set(index, {
-      avatarFuture,
-      avatarView,
-      avatarFactory,
-      avatarPromise: avatarPromise,
-      avatar: null,
-    });
-
-    (async () => {
-      const { avatar, index } = await avatarPromise;
-
+    avatarFuture.promise().then((avatar: Avatar) => {
       avatarView.avatarController = new DeserializationAvatarController(
         avatar,
         index
       );
-    })();
+    });
   }, []);
 
   return (

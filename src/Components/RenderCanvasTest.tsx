@@ -1,8 +1,5 @@
-import { Avatar } from "@0xalter/alter-core";
-import React, { useEffect, useMemo, useRef } from "react";
-import AvatarMap, { SAMPLES } from "../module/Facemoji/AvatarStore";
-import CreateAvatar from "../module/Facemoji/createAvatar";
-import DeserializationAvatarController from "../module/Facemoji/DeserializationAvatarController";
+import React, { useMemo, useRef } from "react";
+import { SAMPLES } from "../App";
 
 interface RenderCanvasTestProps {
   // videoRef: React.RefObject<HTMLVideoElement>;

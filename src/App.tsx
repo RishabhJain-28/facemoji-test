@@ -2,7 +2,8 @@ import { useMemo } from "react";
 import "./App.css";
 import { Capture } from "./Components/Capture";
 import { Temp } from "./Components/Temp";
-import { SAMPLES } from "./module/Facemoji/AvatarStore";
+export const SAMPLES = 3; //! remove
+
 function App() {
   const d = useMemo(
     () => new Array(SAMPLES).fill(SAMPLES).map((e, i) => i),

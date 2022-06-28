@@ -5,7 +5,6 @@ import {
   FaceTrackerResultSerializer,
 } from "@0xalter/alter-core";
 import React, { useEffect, useRef, useState } from "react";
-import avatarMap from "../module/Facemoji/AvatarStore";
 import CreateAvatar from "../module/Facemoji/createAvatar";
 import DeserializationAvatarController from "../module/Facemoji/DeserializationAvatarController";
 interface CaptureProps {}
@@ -38,28 +37,13 @@ export const Capture: React.FC<CaptureProps> = ({}) => {
       0
     );
 
-    const avatarPromise = new Promise<{ avatar: Avatar; index: number }>(
-      (resolve) => {
-        avatarFuture
-          .promise()
-          .then((avatar: Avatar) => resolve({ avatar, index: 0 }));
-      }
-    );
     const cameraTrackerFuture = FaceTracker.createVideoTracker(
       avatarFactory.bundledFileSystem
     );
 
-    avatarMap.set(0, {
-      avatarFuture,
-      avatarView,
-      avatarFactory,
-      avatarPromise: avatarPromise,
-      avatar: null,
-    });
-
     (async () => {
-      const [{ avatar, index }, faceTracker] = await Promise.all([
-        avatarPromise,
+      const [avatar, faceTracker] = await Promise.all([
+        avatarFuture.promise(),
         cameraTrackerFuture.promise(),
       ]);
 
