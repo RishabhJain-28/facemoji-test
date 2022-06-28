@@ -1,25 +1,20 @@
 import {
   Avatar,
-  AvatarFactory,
-  AvatarView,
   CameraWrapper,
   FaceTracker,
   FaceTrackerResultSerializer,
-  Future,
-  Try,
 } from "@0xalter/alter-core";
 import React, { useEffect, useRef, useState } from "react";
-import avatarMap from "./AvatarStore";
-import CreateAvatar from "./createAvatar";
-import DeserializationAvatarController from "./DeserializationAvatarController";
+import avatarMap from "../module/Facemoji/AvatarStore";
+import CreateAvatar from "../module/Facemoji/createAvatar";
+import DeserializationAvatarController from "../module/Facemoji/DeserializationAvatarController";
 interface CaptureProps {}
 
 export const Capture: React.FC<CaptureProps> = ({}) => {
-  const ref = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    //get video stream
     (async () => {
       if (!videoRef.current) return;
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -31,20 +26,15 @@ export const Capture: React.FC<CaptureProps> = ({}) => {
       videoRef.current.play();
       setReady(true);
     })();
-    // if (!canvasRef.current) return;
-
-    // const avatar = createAvatar(canvasRef.current);
-    // setAvatar(avatar);
   }, []);
-  // Base avatar management (API initialization, resource loading, presets switching, fps message)
   useEffect(() => {
     if (!ready) return;
-    if (!ref.current || !videoRef.current) return;
+    if (!canvasRef.current || !videoRef.current) return;
     console.log("yey");
     const cameraWrapper = new CameraWrapper(videoRef.current);
 
     const [avatarFuture, avatarView, avatarFactory] = CreateAvatar.createAvatar(
-      ref.current,
+      canvasRef.current,
       0
     );
 
@@ -88,16 +78,11 @@ export const Capture: React.FC<CaptureProps> = ({}) => {
       cameraWrapper.addOnFrameListener((cameraTexture) => {
         const trackResult = faceTracker.track(cameraTexture);
         if (trackResult) {
-          // Send serialized tracking result over WebRTC or WebSockets
-          // This demo example simulates that with custom browser events
-          // console.log('trackResult', trackResult)
-
           dispatchEvent(
             new CustomEvent("serializedData", {
               detail: serializer.serialize(trackResult),
             })
           );
-          // _trackResult = trackResult
         }
       });
     })();
@@ -108,7 +93,11 @@ export const Capture: React.FC<CaptureProps> = ({}) => {
       <video ref={videoRef} id="videoSource" className="h-[100px]"></video>
 
       <div id="canvas-wrapper" className="relative">
-        <canvas ref={ref} id="canvas${i}" className="w-[150px] h-[150px]" />
+        <canvas
+          ref={canvasRef}
+          id="canvas${i}"
+          className="w-[150px] h-[150px]"
+        />
       </div>
     </>
   );

@@ -6,7 +6,6 @@ import {
 
 class DeserializationAvatarController extends TrackerResultAvatarController {
   private deserializer: FaceTrackerResultDeserializer | undefined;
-  // public index:number
   private index: Number;
   constructor(avatar: Avatar, _index: Number) {
     super(avatar);
@@ -19,17 +18,14 @@ class DeserializationAvatarController extends TrackerResultAvatarController {
       window.addEventListener(eventKey, ((e: CustomEvent) =>
         onEvent(e)) as EventListener);
 
-    // Instantiate deserializer with serialization format when received
     initListener("serializationFormat", (e) => {
-      console.log("setting", this.index, e.detail);
+      //   console.log("setting", this.index, e.detail);
       return (this.deserializer = FaceTrackerResultDeserializer.create(
         e.detail
       ));
     });
-    // Use TrackerResultAvatarController base class method update() to animate the avatar based on received tracking data
     initListener("serializedData", (e) => {
       const a = this.deserializer?.deserialize(e.detail).trackerResult;
-      // console.log('this.index', this.index, a)
       return this.update(a);
     });
   }

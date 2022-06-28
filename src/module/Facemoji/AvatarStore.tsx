@@ -18,3 +18,4 @@ const AvatarMap: Map<
 > = new Map();
 
 export default AvatarMap;
+export const SAMPLES = 5;
