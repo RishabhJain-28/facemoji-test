@@ -14,6 +14,7 @@ export const Capture: React.FC<CaptureProps> = ({}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = useState(false);
+  const [faceDetected, setFaceDetected] = useState(false);
   useEffect(() => {
     (async () => {
       if (!videoRef.current) return;
@@ -77,6 +78,8 @@ export const Capture: React.FC<CaptureProps> = ({}) => {
       cameraWrapper.addOnFrameListener((cameraTexture) => {
         const trackResult = faceTracker.track(cameraTexture);
         if (trackResult) {
+          setFaceDetected(trackResult.hasFace());
+          // trackingMessageElement.innerHTML = trackerResult.hasFace() === false ? 'No face detected' : ''
           dispatchEvent(
             new CustomEvent("serializedData", {
               detail: serializer.serialize(trackResult),
@@ -90,7 +93,7 @@ export const Capture: React.FC<CaptureProps> = ({}) => {
   return (
     <>
       <video ref={videoRef} id="videoSource" className="h-[100px]"></video>
-
+      {faceDetected ? null : <h1 className="text-red-600">No face detected</h1>}
       <div id="canvas-wrapper" className="relative">
         <canvas
           ref={canvasRef}
