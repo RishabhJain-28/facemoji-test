@@ -1,11 +1,9 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import "./App.css";
 import { Capture } from "./Components/Capture";
-import { RenderCanvasTest } from "./Components/RenderCanvasTest";
+import { Temp } from "./Components/Temp";
 import { SAMPLES } from "./module/Facemoji/AvatarStore";
 function App() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   const d = useMemo(
     () => new Array(SAMPLES).fill(SAMPLES).map((e, i) => i),
     []
@@ -29,13 +27,14 @@ function App() {
           ></circle>
         </svg>
       </div>
-
       <Capture />
       <div className="mt-[200px] flex flex-wrap">
         {d.map((_, i) => (
-          <RenderCanvasTest key={i} />
+          <Temp key={i} index={i} />
         ))}
       </div>
+
+      {/* <RenderCanvasTest /> */}
     </div>
   );
 }

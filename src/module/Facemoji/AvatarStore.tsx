@@ -18,4 +18,4 @@ const AvatarMap: Map<
 > = new Map();
 
 export default AvatarMap;
-export const SAMPLES = 5;
+export const SAMPLES = 3; //! remove

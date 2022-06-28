@@ -30,7 +30,6 @@ export const Capture: React.FC<CaptureProps> = ({}) => {
   useEffect(() => {
     if (!ready) return;
     if (!canvasRef.current || !videoRef.current) return;
-    console.log("yey");
     const cameraWrapper = new CameraWrapper(videoRef.current);
 
     const [avatarFuture, avatarView, avatarFactory] = CreateAvatar.createAvatar(
@@ -69,11 +68,11 @@ export const Capture: React.FC<CaptureProps> = ({}) => {
       );
 
       const serializer = FaceTrackerResultSerializer.create();
-      dispatchEvent(
-        new CustomEvent("serializationFormat", {
-          detail: serializer.serializationFormat,
-        })
-      );
+      // dispatchEvent(
+      //   new CustomEvent("serializationFormat", {
+      //     detail: serializer.serializationFormat,
+      //   })
+      // );
       cameraWrapper.start().logError("Error starting camera");
       cameraWrapper.addOnFrameListener((cameraTexture) => {
         const trackResult = faceTracker.track(cameraTexture);
